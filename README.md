@@ -20,17 +20,22 @@ to switch accounts.
 brew install dakiquang/tap/claude-desktop-twins
 ```
 
-Unofficial. Not affiliated with Anthropic.
+Unofficial. Not affiliated with Anthropic. Tested with Claude Desktop 5.11492.5 on macOS
+(Apple silicon), November 2026.
 
 ![cdt add creates one app per account and asks macOS for notification permission](docs/screenshots/add.png)
 
 ## The problem
 
-Claude Desktop signs in to one account at a time. You can start a second copy on a
-different data folder with `--user-data-dir`, but every copy still uses the same app
-identity. macOS then treats all copies as one app: they share one Dock icon, one
-notification setting, and a notification click brings up whichever copy macOS picks,
-not the one that sent it.
+Claude Desktop signs in to one account at a time. To use a second account you sign out
+and sign in again.
+
+You can start a second copy on another data folder with `--user-data-dir`. But every
+copy keeps the same app identity, so macOS treats them as one app. They share one Dock
+icon and one notification setting, and a notification click opens whichever copy macOS
+picks, not the one that sent it.
+
+This tool gives each account its own app identity, so macOS keeps them apart.
 
 ## Install
 
@@ -43,6 +48,8 @@ macOS 12 or later, Claude Desktop in `/Applications`, and the Xcode Command Line
 (`xcode-select --install`) to build a small helper.
 
 ## Use
+
+### Add your accounts
 
 ```bash
 cdt add work@example.com          # create an app for the account, ask for notifications
@@ -64,15 +71,18 @@ notification permission and running state:
 
 ![cdt doctor output for two accounts](docs/screenshots/doctor.png)
 
-After Claude Desktop updates, open the original Claude.app once so it installs the
-update, then rebuild each account that `cdt list` marks as stale:
+### After a Claude Desktop update
+
+Open the original Claude.app once so it installs the
+update. Then rebuild each account that `cdt list` marks as stale:
 
 ```bash
 cdt rebuild work@example.com
 ```
 
-Move Code sessions between accounts (the target account must have opened its Code tab
-once):
+### Move Claude Code sessions between accounts
+
+The target account must have opened its Code tab once.
 
 ```bash
 cdt sessions list work
@@ -88,15 +98,16 @@ session that is already there, and keeps archived sessions archived.
 
 ![cdt sessions list, then a dry run and a real copy into work@example.com](docs/screenshots/sessions.png)
 
-Adopt a data folder made by another launcher or by hand:
-(the data folder of plain Claude.app cannot be imported; add an account and copy
-sessions into it instead)
+### Import an existing profile
+
+Adopt a data folder made by another launcher or by hand. The data folder of plain
+Claude.app cannot be imported: add an account and copy sessions into it instead.
 
 ```bash
 cdt import ~/Library/Application\ Support/SomeOtherLauncher/work --as work@example.com
 ```
 
-Remove one account, or everything:
+### Remove accounts or uninstall
 
 ```bash
 cdt remove personal@example.com             # keeps its data folder
@@ -152,7 +163,7 @@ a running Claude process on that folder and brings it forward instead.
 If Claude Desktop ships its own multi-account support, `cdt doctor` will say so, and
 you may not need this tool any more.
 
-## Comparison
+## Alternatives
 
 Other free tools clone Claude.app too, but keep Anthropic's bundle id and signature, for
 example [claude-desktop-profiles](https://github.com/odahcam/claude-desktop-profiles)
@@ -170,6 +181,47 @@ from testing them.
 | Runtime | Bash, plus a small Swift helper built on your Mac | Swift app, or Node.js CLI |
 
 Both approaches are valid. This one picks correct notifications over automatic updates.
+
+## FAQ
+
+### How do I use two Claude accounts on one Mac at the same time?
+
+Install the tool, then run `cdt add` once per account, for example
+`cdt add work@example.com` and `cdt add personal@example.com`. Each account gets its own
+app in `~/Applications/Claude Desktop Twins/`. Open both and sign in once in each.
+
+### Can I switch Claude Desktop accounts without signing out?
+
+Yes. Every account stays signed in inside its own app, so you switch with Cmd-Tab, the
+Dock, Spotlight, `cdt open <account>` or the `cdt` menu.
+
+### Do notifications go to the right account?
+
+Yes. Each app has its own bundle id, so macOS shows which account a notification came
+from, and clicking it opens that account. You can turn notifications on or off per
+account in System Settings.
+
+### Does it change my Claude.app?
+
+No. `/Applications/Claude.app` is never modified and keeps updating itself. The
+per-account apps are copies made on your Mac. No Anthropic file is shipped with this
+tool.
+
+### Are my accounts kept separate?
+
+Each account has its own data folder, so sign-ins, cookies and chats stay apart. The
+Code tab is the exception: all accounts share `~/.claude` (settings, skills and
+transcripts). See Limits.
+
+### What happens when Claude Desktop updates?
+
+Open the original Claude.app so it installs the update, then run
+`cdt rebuild <account>` for each account that `cdt list` marks as stale. Until then the
+account keeps working on its older version.
+
+### Does it work on Windows or Linux?
+
+No. It relies on macOS app bundles, code signing and APFS clones.
 
 ## Support
 
@@ -192,4 +244,5 @@ employer, and comes with no promise of support. Use it at your own risk.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). Made by [Quang Dang (@dakiquang)](https://github.com/dakiquang).
+Report security issues privately as described in [SECURITY.md](SECURITY.md).
