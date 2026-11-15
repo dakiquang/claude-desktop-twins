@@ -31,7 +31,7 @@ Usage:
   cdt remove <account> [--purge]       delete an account's app (--purge: data to Trash)
   cdt import <data dir> --as <account> adopt an existing Claude data dir
   cdt sessions list <account|default> [--json]
-  cdt sessions copy --from <a> --to <b> [--cwd <text>] [--dry-run] [--force]
+  cdt sessions copy                    copy sessions between accounts: Premium (see README)
   cdt icon set <account> <file.icns>   give an account its own Dock icon (reset: back to Claude)
   cdt doctor [--json]                  check the setup
   cdt uninstall [--purge-data]         remove everything this tool created

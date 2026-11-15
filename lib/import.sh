@@ -13,7 +13,7 @@ import_dir() { # data_dir label
   # with a clone would mean two writers on one profile.
   if [ "$dir" = "$(cd "$CDT_DEFAULT_DATA_DIR" 2>/dev/null && pwd -P)" ]; then
     err "$given is the data dir of plain Claude.app and cannot be imported."
-    err "Add a new account instead, then copy sessions: cdt sessions copy --from default --to <account>"
+    err "Add a new account instead with: cdt add <account>"
     return 1
   fi
   if account_exists "$slug"; then

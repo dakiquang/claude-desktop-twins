@@ -95,6 +95,4 @@ cp -R "$F/account-b/claude-code-sessions" "$DATA/profiles/workexamplecom/"
 cp -R "$F/transcripts/"* "$HOME/.claude/projects/"
 T="$S/sessions.txt"
 run "$T" sessions list default
-run "$T" sessions copy --from default --to work@example.com --dry-run
-run "$T" sessions copy --from default --to work@example.com
 render "$T" sessions "cdt sessions"

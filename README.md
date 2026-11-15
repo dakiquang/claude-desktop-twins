@@ -8,7 +8,7 @@ right account opens.
 - Keep work and personal accounts signed in side by side.
 - Switch accounts with Cmd-Tab, the Dock or Spotlight.
 - Get notifications per account, and turn them on or off per account.
-- Move Claude Code sessions from one account to another.
+- Move Claude Code sessions between accounts with [Premium](#premium) (coming soon).
 
 🇻🇳 **Tiếng Việt:** dùng nhiều tài khoản Claude Desktop cùng lúc trên một máy Mac, không
 cần đăng xuất. Xem [hướng dẫn tiếng Việt](#hướng-dẫn-tiếng-việt).
@@ -91,25 +91,23 @@ that `cdt list` marks as stale:
 cdt rebuild work@example.com
 ```
 
-### Move Claude Code sessions between accounts
+### See Claude Code sessions per account
 
-The target account must have opened its Code tab once. `default` is plain Claude.app.
+`default` is plain Claude.app.
 
 ```bash
-cdt sessions list work
-cdt sessions copy --from default --to work@example.com --cwd /projects/api --dry-run
-cdt sessions copy --from default --to work@example.com --cwd /projects/api
+cdt sessions list default
+cdt sessions list work --json
 ```
 
-A copy backs up the target first, never overwrites a session that is already there,
-and keeps archived sessions archived.
+![cdt sessions list for plain Claude.app](docs/screenshots/sessions.png)
 
-![cdt sessions list, then a dry run and a real copy into work@example.com](docs/screenshots/sessions.png)
+Copying sessions from one account to another is part of [Premium](#premium).
 
 ### Import an existing profile
 
 Adopt a data folder made by another launcher or by hand. The data folder of plain
-Claude.app cannot be imported: add an account and copy sessions into it instead.
+Claude.app cannot be imported: add an account instead.
 
 ```bash
 cdt import ~/Library/Application\ Support/SomeOtherLauncher/work --as work@example.com
@@ -139,9 +137,27 @@ cdt uninstall --purge-data                  # also data folders and session back
 brew uninstall claude-desktop-twins
 ```
 
-Commands that change or delete things (`rebuild`, `remove`, the `--to` of
-`sessions copy`) need the full account name. `open` and `sessions list` accept part of
-it.
+Commands that change or delete things (`rebuild`, `remove`, `icon`) need the full
+account name. `open` and `sessions list` accept part of it.
+
+## Premium
+
+Claude Desktop Twins Premium is a menu bar app for the same accounts, sold once. It is
+in development; the free CLI stays MIT and keeps everything above.
+
+- **Move Claude Code sessions** between accounts by drag and drop, with a preview, a
+  backup first, nothing overwritten and archived sessions kept archived.
+- **One-click update** of every account after a Claude update, asking before it stops
+  a running Claude Code session.
+- **Claude Code usage per account**: tokens and an estimated cost per day and per
+  5-hour block, counted on your Mac.
+- **Separate Claude Code per account**, so work settings, memory and transcripts stay
+  out of the personal account.
+- Account icons, health checks with fixes and session backups from a window.
+
+To hear when it ships, [watch this repository's releases](https://github.com/dakiquang/claude-desktop-twins/releases).
+Already using `cdt sessions copy` from v0.1.0? That version keeps working; it stays
+available under the MIT licence.
 
 ## How it works
 
@@ -180,10 +196,7 @@ a running Claude process on that folder and brings it forward instead.
   keeps working on its older version until you rebuild it.
 - The Code tab in every account shares `~/.claude`, `~/.claude.json` and the Claude
   Code keychain item. Settings, skills and transcripts are shared, and some account
-  details from one account can show up in another. Session copying relies on this
-  sharing.
-- `cdt sessions copy` relies on an undocumented folder layout checked up to Claude
-  5.11492.5. On a newer Claude it refuses to run unless you pass `--force`.
+  details from one account can show up in another.
 - macOS only.
 
 If Claude Desktop ships its own multi-account support, `cdt doctor` will say so, and
@@ -269,6 +282,9 @@ Mỗi lệnh `cdt add` tạo một app trong `~/Applications/Claude Desktop Twin
 gửi thông báo (chọn Allow). Mở từng app một lần và đăng nhập đúng tài khoản. Cần macOS 12
 trở lên, Claude Desktop trong `/Applications` và Xcode Command Line Tools
 (`xcode-select --install`).
+
+Chuyển session Claude Code giữa các tài khoản có trong bản [Premium](#premium) (đang phát
+triển).
 
 ### Câu hỏi thường gặp
 

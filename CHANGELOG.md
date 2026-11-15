@@ -13,6 +13,10 @@ All notable changes to this project are documented here. The format follows
 - `list --json`, `doctor --json` and `sessions list <account> --json`: machine-readable output with a `schema` number; `doctor --json` gives each check a stable id, a level and the fix command.
 - `icon set <account> <file.icns>` and `icon reset <account>`: an account's own Dock and Cmd-Tab icon, kept across rebuilds and removed with the account.
 
+### Removed
+
+- `sessions copy` moves to Claude Desktop Twins Premium; the command now says so and changes nothing. `sessions list` stays. v0.1.0 keeps `sessions copy` under the MIT licence.
+
 ## [0.1.0] - 2026-11-15
 
 ### Added

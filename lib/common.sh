@@ -6,6 +6,7 @@
 CDT_VERSION="0.2.0"
 CDT_NAME="claude-desktop-twins"
 CDT_BUNDLE_PREFIX="local.claude-desktop-twins"
+CDT_PREMIUM_URL="https://github.com/dakiquang/claude-desktop-twins#premium"
 
 CLAUDE_APP="${CLAUDE_APP:-/Applications/Claude.app}"
 CDT_APPS_DIR="${CDT_APPS_DIR:-$HOME/Applications/Claude Desktop Twins}"
