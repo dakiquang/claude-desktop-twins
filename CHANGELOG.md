@@ -1,0 +1,18 @@
+# Changelog
+
+All notable changes to this project are documented here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+[Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+### Added
+
+- `add`, `rebuild` and `remove [--purge]`: build, refresh and delete a per-account clone of Claude.app with its own bundle id, launcher and notification permission. A failed rebuild leaves the previous clone in place.
+- `open`, the interactive menu and `list`: fuzzy account matching; a running account is brought forward instead of starting a second instance; stale clones are reported with the exact `rebuild` command.
+- `doctor`: checks Claude.app, the helper, each clone's signature, identifier, version, notification permission and running instances, and the native `multiAccount` flag. Runs with no accounts.
+- `sessions list` and `sessions copy [--cwd] [--dry-run] [--force]`: copy Code sessions between accounts with a backup first, no overwrites and archive state kept.
+- `import <data dir> --as <account>`: adopt an existing data folder.
+- `rebuild`, `remove` and `sessions copy --to` need the full account name; `remove --purge` never trashes an imported data dir.
+- `uninstall [--purge-data]`: remove every clone, the helper and the registry.
+- `cdt-helper`: requests notification permission, reads its status, and focuses a running account.

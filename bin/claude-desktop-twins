@@ -1,0 +1,61 @@
+#!/bin/bash
+# claude-desktop-twins (alias cdt): run several Claude Desktop accounts side by side
+# on macOS, each as its own app. Unofficial, not affiliated with Anthropic.
+# This file only finds lib/ and dispatches the subcommand.
+set -u -o pipefail
+
+# Resolve symlinks (bin/cdt, Homebrew links) without readlink -f, for bash 3.2.
+self="${BASH_SOURCE[0]}"
+while [ -L "$self" ]; do
+  target="$(readlink "$self")"
+  case "$target" in /*) self="$target" ;; *) self="$(dirname "$self")/$target" ;; esac
+done
+CDT_ROOT="$(cd "$(dirname "$self")/.." && pwd)"
+
+for f in common accounts clone launch doctor sessions import uninstall; do
+  # shellcheck source=/dev/null
+  . "$CDT_ROOT/lib/$f.sh"
+done
+
+usage() {
+  cat <<'USAGE'
+claude-desktop-twins (cdt): several Claude Desktop accounts on one Mac.
+Unofficial. Not affiliated with Anthropic.
+
+Usage:
+  cdt                                  pick an account from a menu and open it
+  cdt add <account>                    create an app for an account
+  cdt open <account>                   open an account, or focus it if it runs
+  cdt list                             accounts, running state and versions
+  cdt rebuild <account>                rebuild an account's app after a Claude update
+  cdt remove <account> [--purge]       delete an account's app (--purge: data to Trash)
+  cdt import <data dir> --as <account> adopt an existing Claude data dir
+  cdt sessions list <account|default>
+  cdt sessions copy --from <a> --to <b> [--cwd <text>] [--dry-run] [--force]
+  cdt doctor                           check the setup
+  cdt uninstall [--purge-data]         remove everything this tool created
+  cdt --version | --help
+
+<account> is a label such as work@example.com; commands match it ignoring case and
+punctuation. "default" in sessions means plain Claude.app.
+USAGE
+}
+
+cmd="${1:-}"
+[ $# -gt 0 ] && shift
+case "$cmd" in
+  -h|--help|help) usage ;;
+  -V|--version|version) echo "$CDT_NAME $CDT_VERSION" ;;
+  "")
+    if [ -t 0 ]; then cmd_menu; else usage; fi ;;
+  add) cmd_add "$@" ;;
+  open) cmd_open "$@" ;;
+  list|ls) cmd_list ;;
+  rebuild) cmd_rebuild "$@" ;;
+  remove|rm) cmd_remove "$@" ;;
+  import) cmd_import "$@" ;;
+  sessions) cmd_sessions "$@" ;;
+  doctor) cmd_doctor ;;
+  uninstall) cmd_uninstall "$@" ;;
+  *) err "unknown command: $cmd"; usage >&2; exit 64 ;;
+esac

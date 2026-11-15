@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # gitleaks scans the whole history
+      - run: brew install bats-core shellcheck gitleaks
+      - run: shellcheck -x bin/claude-desktop-twins lib/*.sh test/make-fake-app.sh
+      - run: bats test
+      - name: helper builds for both architectures
+        run: |
+          swiftc -O -target arm64-apple-macos12 -o "$RUNNER_TEMP/h-arm64" helper/cdt-helper.swift
+          swiftc -O -target x86_64-apple-macos12 -o "$RUNNER_TEMP/h-x86_64" helper/cdt-helper.swift
+          lipo -create -output "$RUNNER_TEMP/cdt-helper" "$RUNNER_TEMP/h-arm64" "$RUNNER_TEMP/h-x86_64"
+          lipo -info "$RUNNER_TEMP/cdt-helper"
+      - run: gitleaks detect --source . --redact --verbose
