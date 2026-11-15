@@ -115,6 +115,20 @@ Claude.app cannot be imported: add an account and copy sessions into it instead.
 cdt import ~/Library/Application\ Support/SomeOtherLauncher/work --as work@example.com
 ```
 
+### Give an account its own icon
+
+```bash
+cdt icon set work@example.com ~/Pictures/work.icns   # shown in the Dock and Cmd-Tab
+cdt icon reset work@example.com                      # back to Claude's icon
+```
+
+The account must not be running. The icon is kept across rebuilds.
+
+### Use from scripts
+
+`cdt list --json`, `cdt doctor --json` and `cdt sessions list <account> --json` print
+JSON with a `schema` number, for scripts and other tools.
+
 ### Remove accounts or uninstall
 
 ```bash

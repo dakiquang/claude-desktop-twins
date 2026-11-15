@@ -12,7 +12,7 @@ while [ -L "$self" ]; do
 done
 CDT_ROOT="$(cd "$(dirname "$self")/.." && pwd)"
 
-for f in common accounts clone updates launch doctor sessions import uninstall; do
+for f in common json accounts clone updates launch doctor sessions import uninstall; do
   # shellcheck source=/dev/null
   . "$CDT_ROOT/lib/$f.sh"
 done
@@ -26,13 +26,14 @@ Usage:
   cdt                                  pick an account from a menu and open it
   cdt add <account>                    create an app for an account
   cdt open <account>                   open an account, or focus it if it runs
-  cdt list                             accounts, running state and versions
+  cdt list [--json]                    accounts, running state and versions
   cdt rebuild <account>                rebuild an account's app after a Claude update
   cdt remove <account> [--purge]       delete an account's app (--purge: data to Trash)
   cdt import <data dir> --as <account> adopt an existing Claude data dir
-  cdt sessions list <account|default>
+  cdt sessions list <account|default> [--json]
   cdt sessions copy --from <a> --to <b> [--cwd <text>] [--dry-run] [--force]
-  cdt doctor                           check the setup
+  cdt icon set <account> <file.icns>   give an account its own Dock icon (reset: back to Claude)
+  cdt doctor [--json]                  check the setup
   cdt uninstall [--purge-data]         remove everything this tool created
   cdt --version | --help
 
@@ -50,12 +51,13 @@ case "$cmd" in
     if [ -t 0 ]; then cmd_menu; else usage; fi ;;
   add) cmd_add "$@" ;;
   open) cmd_open "$@" ;;
-  list|ls) cmd_list ;;
+  list|ls) cmd_list "$@" ;;
   rebuild) cmd_rebuild "$@" ;;
   remove|rm) cmd_remove "$@" ;;
   import) cmd_import "$@" ;;
   sessions) cmd_sessions "$@" ;;
-  doctor) cmd_doctor ;;
+  doctor) cmd_doctor "$@" ;;
+  icon) cmd_icon "$@" ;;
   uninstall) cmd_uninstall "$@" ;;
   *) err "unknown command: $cmd"; usage >&2; exit 64 ;;
 esac

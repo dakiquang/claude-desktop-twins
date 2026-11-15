@@ -50,7 +50,7 @@ cmd_uninstall() {
   rm -rf "$CDT_APPS_DIR/.cdt-work"
   [ -d "$CDT_APPS_DIR" ] && rmdir "$CDT_APPS_DIR" 2>/dev/null
 
-  rm -rf "$CDT_BIN_DIR" "$CDT_ACCOUNTS_DIR"
+  rm -rf "$CDT_BIN_DIR" "$CDT_ACCOUNTS_DIR" "$CDT_ICONS_DIR"
   if [ -d "$CDT_BACKUPS_DIR" ]; then
     if [ "$purge" = 1 ]; then move_to_trash "$CDT_BACKUPS_DIR"; else kept="$kept\n  $CDT_BACKUPS_DIR"; fi
   fi

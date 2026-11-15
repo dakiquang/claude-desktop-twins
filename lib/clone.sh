@@ -136,7 +136,7 @@ clone_build() { # slug
   step cp -cR "$CLAUDE_APP" "$tmp" || { rm -rf "$tmp"; return 1; }
   c="$tmp/Contents"
   ent="$(mktemp -t cdt-ent)"
-  if ! _clone_customize "$c" "$bid" "$label" "$data" "$version" "$helper" "$ent"; then
+  if ! _clone_customize "$c" "$bid" "$label" "$data" "$version" "$helper" "$ent" "$(account_get "$slug" IconFile 2>/dev/null)"; then
     rm -rf "$tmp" "$ent"
     err "build failed; the previous clone (if any) is unchanged."
     return 1
@@ -158,8 +158,8 @@ clone_build() { # slug
   info "built: $dst ($bid, Claude $version)"
 }
 
-_clone_customize() { # contents bundle_id label data_dir version helper entitlements
-  local c="$1" bid="$2" label="$3" data="$4" version="$5" helper="$6" ent="$7"
+_clone_customize() { # contents bundle_id label data_dir version helper entitlements [icon]
+  local c="$1" bid="$2" label="$3" data="$4" version="$5" helper="$6" ent="$7" icon="${8:-}"
   # Identity: own bundle id and name; drop URL schemes so claude:// stays with the
   # original app; the provisioning profile is bound to Anthropic's team id.
   step plutil -replace CFBundleIdentifier -string "$bid" "$c/Info.plist" || return 1
@@ -167,6 +167,15 @@ _clone_customize() { # contents bundle_id label data_dir version helper entitlem
   plutil -remove CFBundleURLTypes "$c/Info.plist" >/dev/null 2>&1 || true
   rm -f "$c/embedded.provisionprofile"
   step plutil -replace LocalSourceVersion -string "$version" "$c/Info.plist" || return 1
+
+  # A custom icon replaces the one from Assets.car: macOS prefers CFBundleIconName, so
+  # drop it and point CFBundleIconFile at our icns. Set before signing.
+  if [ -n "$icon" ]; then
+    [ -f "$icon" ] || { err "icon file missing: $icon (run: cdt icon reset <account>)"; return 1; }
+    step cp "$icon" "$c/Resources/cdt-account.icns" || return 1
+    plutil -remove CFBundleIconName "$c/Info.plist" >/dev/null 2>&1 || true
+    step plutil -replace CFBundleIconFile -string cdt-account.icns "$c/Info.plist" || return 1
+  fi
 
   step _write_launcher "$c/MacOS/launcher" "$data" || return 1
   step plutil -replace CFBundleExecutable -string launcher "$c/Info.plist" || return 1
@@ -232,6 +241,41 @@ cmd_add() {
   info "open it with: cdt open $label"
 }
 
+# `cdt icon set <account> <file.icns>` / `cdt icon reset <account>`: give an account's
+# app its own Dock and Cmd-Tab icon. The file is copied into the tool's data folder and
+# applied on every rebuild.
+cmd_icon() {
+  local sub="${1:-}" slug file dest
+  [ $# -gt 0 ] && shift
+  case "$sub" in
+    set)
+      [ $# -eq 2 ] || die "usage: cdt icon set <account> <file.icns>"
+      slug="$(account_resolve_exact "$1")" || exit 1
+      file="$2"
+      [ -f "$file" ] || die "file not found: $file"
+      # Real .icns files start with the magic bytes "icns"; sips trusts the extension.
+      [ "$(head -c 4 "$file" 2>/dev/null)" = icns ] || die "not an .icns file: $file"
+      clone_is_running "$slug" && die "$(account_label "$slug") is running; quit it first."
+      mkdir -p "$CDT_ICONS_DIR" || exit 1
+      dest="$CDT_ICONS_DIR/$slug.icns"
+      if ! { cp "$file" "$dest.tmp" && mv -f "$dest.tmp" "$dest"; }; then die "cannot copy $file"; fi
+      account_set "$slug" IconFile "$dest" || exit 1
+      clone_build "$slug" || exit 1
+      info "icon set for $(account_label "$slug"); the Dock may need a moment to refresh"
+      ;;
+    reset)
+      [ $# -eq 1 ] || die "usage: cdt icon reset <account>"
+      slug="$(account_resolve_exact "$1")" || exit 1
+      clone_is_running "$slug" && die "$(account_label "$slug") is running; quit it first."
+      plutil -remove IconFile "$(account_file "$slug")" >/dev/null 2>&1 || true
+      rm -f "$CDT_ICONS_DIR/$slug.icns"
+      clone_build "$slug" || exit 1
+      info "icon reset for $(account_label "$slug")"
+      ;;
+    *) die "usage: cdt icon set <account> <file.icns> | cdt icon reset <account>" ;;
+  esac
+}
+
 cmd_rebuild() {
   local slug
   [ -n "${1:-}" ] || die "usage: cdt rebuild <account>"
@@ -267,6 +311,7 @@ cmd_remove() {
   fi
   clone_remove "$slug" || exit 1
   update_block_remove "$data"
+  rm -f "$CDT_ICONS_DIR/$slug.icns"
   account_delete "$slug"
   info "unregistered: $label"
   if [ "$purge" = 1 ] && [ -e "$data" ]; then

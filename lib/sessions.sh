@@ -58,9 +58,41 @@ EOF
   [ -n "$best" ] && echo "$best"
 }
 
-sessions_list() { # query
+_sessions_list_json() { # data_dir
+  local data="$1" d rel orgs="" folders count folder total archived
+  while IFS= read -r d; do
+    [ -n "$d" ] || continue
+    rel="${d#"$data"/claude-code-sessions/}"
+    total="$(_count_sessions "$d")"
+    archived="$(_json archived "$d/archived-sessions.idx" | grep -c . || true)"
+    folders=""
+    if [ "$total" -gt 0 ]; then
+      while read -r count folder; do
+        [ -n "$folder" ] || continue
+        folders="${folders:+$folders,}{\"folder\":$(json_str "$folder"),\"sessions\":$count}"
+      done <<EOF2
+$(_json scan "$d" | cut -d $'\x1f' -f2 | grep . | sort | uniq -c | sort -rn)
+EOF2
+    fi
+    orgs="${orgs:+$orgs,}{$(json_join \
+      "\"account_uuid\":$(json_str "${rel%%/*}")" \
+      "\"org_uuid\":$(json_str "${rel##*/}")" \
+      "\"sessions\":$total" \
+      "\"archived\":$archived" \
+      "\"folders\":[$folders]")}"
+  done <<EOF
+$(sessions_org_dirs "$data")
+EOF
+  printf '{"schema":%s,"data_dir":%s,"orgs":[%s]}\n' "$CDT_JSON_SCHEMA" "$(json_str "$data")" "$orgs"
+}
+
+sessions_list() { # query [--json]
   local data d total archived
   data="$(sessions_data_dir "$1")" || return 1
+  if [ "${2:-}" = "--json" ]; then
+    _sessions_list_json "$data"
+    return 0
+  fi
   if [ -z "$(sessions_org_dirs "$data")" ]; then
     info "no Code sessions in $data"
     return 0
@@ -234,8 +266,9 @@ cmd_sessions() {
   [ $# -gt 0 ] && shift
   case "$sub" in
     list)
-      [ -n "${1:-}" ] || die "usage: cdt sessions list <account|default>"
-      sessions_list "$1" || exit 1 ;;
+      [ -n "${1:-}" ] || die "usage: cdt sessions list <account|default> [--json]"
+      case "${2:-}" in ""|--json) ;; *) die "usage: cdt sessions list <account|default> [--json]" ;; esac
+      sessions_list "$1" "${2:-}" || exit 1 ;;
     copy) sessions_copy "$@" || exit 1 ;;
     *) die "usage: cdt sessions list <account|default> | cdt sessions copy --from <a> --to <b> [--cwd <text>] [--dry-run] [--force]" ;;
   esac

@@ -52,7 +52,7 @@ start_account() { # label
 # Load the libraries into the test shell to call functions directly.
 load_libs() {
   local f
-  for f in common accounts clone updates launch doctor sessions import uninstall; do
+  for f in common json accounts clone updates launch doctor sessions import uninstall; do
     # shellcheck source=/dev/null
     . "$REPO_ROOT/lib/$f.sh"
   done

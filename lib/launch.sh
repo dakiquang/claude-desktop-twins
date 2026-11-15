@@ -99,8 +99,46 @@ cmd_menu() {
   return 1
 }
 
+_list_state() { # slug -> current|stale|missing
+  if [ -z "$(clone_version "$1")" ]; then echo missing
+  elif clone_is_stale "$1"; then echo stale
+  else echo current
+  fi
+}
+
+_list_json() {
+  local s items="" item pid icon running
+  for s in $(account_slugs); do
+    pid="$(account_pid "$s" | head -n 1)"
+    running=1; [ -n "$pid" ] && running=0
+    icon="$(account_get "$s" IconFile 2>/dev/null)"
+    item="{$(json_join \
+      "\"label\":$(json_str "$(account_label "$s")")" \
+      "\"slug\":$(json_str "$s")" \
+      "\"bundle_id\":$(json_str "$(account_bundle_id "$s")")" \
+      "\"data_dir\":$(json_str "$(account_data_dir "$s")")" \
+      "\"app\":$(json_str "$(clone_path "$s")")" \
+      "\"running\":$(json_bool "$running")" \
+      "\"pid\":$(json_num_or_null "$pid")" \
+      "\"clone_version\":$(json_str_or_null "$(clone_version "$s")")" \
+      "\"state\":$(json_str "$(_list_state "$s")")" \
+      "\"empty_data_dir\":$(account_is_empty "$s"; json_bool $?)" \
+      "\"update_block\":$(json_str "$(update_block_state "$(account_data_dir "$s")")")" \
+      "\"icon\":$(json_str_or_null "$icon")")}"
+    items="${items:+$items,}$item"
+  done
+  printf '{"schema":%s,"version":%s,"claude_app":%s,"claude_version":%s,"accounts":[%s]}\n' \
+    "$CDT_JSON_SCHEMA" "$(json_str "$CDT_VERSION")" "$(json_str "$CLAUDE_APP")" \
+    "$(json_str_or_null "$(claude_version)")" "$items"
+}
+
 cmd_list() {
   local s current any=0 running version empty state
+  case "${1:-}" in
+    --json) _list_json; return 0 ;;
+    "") ;;
+    *) die "usage: cdt list [--json]" ;;
+  esac
   current="$(claude_version)"
   printf '%-32s %-24s %-8s %-14s %s\n' LABEL SLUG RUNNING CLONE STATE
   for s in $(account_slugs); do

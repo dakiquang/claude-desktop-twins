@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `list --json`, `doctor --json` and `sessions list <account> --json`: machine-readable output with a `schema` number; `doctor --json` gives each check a stable id, a level and the fix command.
+- `icon set <account> <file.icns>` and `icon reset <account>`: an account's own Dock and Cmd-Tab icon, kept across rebuilds and removed with the account.
+
 ## [0.1.0] - 2026-11-15
 
 ### Added
