@@ -1,9 +1,14 @@
-# claude-desktop-twins: multiple Claude Desktop accounts on one Mac
+# Multiple Claude Desktop accounts on one Mac
 
-**Run your work and personal Claude Desktop accounts side by side on macOS.** Each
-account becomes its own app, with its own Dock icon, Cmd-Tab entry and notifications,
-and clicking a notification opens the account that sent it. No more signing out and in
-to switch accounts.
+**Use your work and personal Claude accounts at the same time, without signing out.**
+`claude-desktop-twins` (command `cdt`) turns each Claude account into its own Mac app,
+with its own Dock icon, Cmd-Tab entry and notifications. Click a notification and the
+right account opens.
+
+- Keep work and personal accounts signed in side by side.
+- Switch accounts with Cmd-Tab, the Dock or Spotlight.
+- Get notifications per account, and turn them on or off per account.
+- Move Claude Code sessions from one account to another.
 
 [![Release](https://img.shields.io/github/v/release/dakiquang/claude-desktop-twins)](https://github.com/dakiquang/claude-desktop-twins/releases)
 [![CI](https://github.com/dakiquang/claude-desktop-twins/actions/workflows/ci.yml/badge.svg)](https://github.com/dakiquang/claude-desktop-twins/actions/workflows/ci.yml)
@@ -11,23 +16,39 @@ to switch accounts.
 ![macOS 12+](https://img.shields.io/badge/macOS-12%2B-lightgrey)
 [![Homebrew](https://img.shields.io/badge/brew-dakiquang%2Ftap-orange)](https://github.com/dakiquang/homebrew-tap)
 
-[![Donate](https://img.shields.io/badge/%E2%98%95%20donate-dakiquang.github.io%2Fdonate-6f4e37)](https://dakiquang.github.io/donate/)
-[![Buy me a coffee with PayPal](https://img.shields.io/badge/PayPal-buy%20me%20a%20coffee-00457C?logo=paypal&logoColor=white)](https://paypal.me/dakiquang)
-[![Buy me a coffee with MoMo](https://img.shields.io/badge/MoMo-m%E1%BB%9Di%20c%C3%A0%20ph%C3%AA-A50064)](https://me.momo.vn/dakiquang)
-[![VietQR](https://img.shields.io/badge/VietQR-scan%20the%20code-A50064)](#support)
+### ☕ Found it useful? Buy me a coffee
+
+If this tool saves you from signing in and out every day, a coffee keeps it maintained.
+Any amount helps. More options on the [donate page](https://dakiquang.github.io/donate/).
+
+| MoMo · VietQR | PayPal |
+|:---:|:---:|
+| <img src="https://dakiquang.github.io/donate/images/qr-momo.png" width="180" alt="MoMo and VietQR code"> | <img src="https://dakiquang.github.io/donate/images/qr-paypal.png" width="180" alt="PayPal QR code"> |
+| [![Mở MoMo](https://img.shields.io/badge/M%E1%BB%9F%20MoMo-%E2%86%92-A50064?style=for-the-badge)](https://me.momo.vn/dakiquang) | [![Open PayPal](https://img.shields.io/badge/Open%20PayPal-%E2%86%92-0070BA?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/dakiquang) |
+
+## Quick start
 
 ```bash
 brew install dakiquang/tap/claude-desktop-twins
+cdt add work@example.com
+cdt add personal@example.com
+cdt open work
 ```
+
+Each `cdt add` creates an app in `~/Applications/Claude Desktop Twins/` and asks macOS
+for notification permission. Open each app once and sign in to its account.
+
+![cdt add creates one app per account and asks macOS for notification permission](docs/screenshots/add.png)
+
+Requirements: macOS 12 or later, Claude Desktop in `/Applications`, and the Xcode
+Command Line Tools (`xcode-select --install`) to build a small helper.
 
 Unofficial. Not affiliated with Anthropic. Tested with Claude Desktop 5.11492.5 on macOS
 (Apple silicon), November 2026.
 
-![cdt add creates one app per account and asks macOS for notification permission](docs/screenshots/add.png)
+## Why Claude Desktop needs this
 
-## The problem
-
-Claude Desktop signs in to one account at a time. To use a second account you sign out
+Claude Desktop signs in to one account at a time. To use another account you sign out
 and sign in again.
 
 You can start a second copy on another data folder with `--user-data-dir`. But every
@@ -35,46 +56,33 @@ copy keeps the same app identity, so macOS treats them as one app. They share on
 icon and one notification setting, and a notification click opens whichever copy macOS
 picks, not the one that sent it.
 
-This tool gives each account its own app identity, so macOS keeps them apart.
+`claude-desktop-twins` gives each account its own app identity, so macOS keeps them
+apart.
 
-## Install
+## Usage
 
-```bash
-brew install dakiquang/tap/claude-desktop-twins
-```
-
-This installs the `claude-desktop-twins` command and the short alias `cdt`. It needs
-macOS 12 or later, Claude Desktop in `/Applications`, and the Xcode Command Line Tools
-(`xcode-select --install`) to build a small helper.
-
-## Use
-
-### Add your accounts
+### Open and list accounts
 
 ```bash
-cdt add work@example.com          # create an app for the account, ask for notifications
-cdt add personal@example.com
-cdt open work                     # open it, or bring it forward if it already runs
-cdt                               # pick an account from a menu
-cdt list                          # accounts, running state, versions
-cdt doctor                        # check everything
+cdt open work        # open it, or bring it forward if it already runs
+cdt                  # pick an account from a menu
+cdt list             # accounts, running state, versions
+cdt doctor           # check everything
 ```
 
-Sign in to the right account the first time each app opens. The apps live in
-`~/Applications/Claude Desktop Twins/`, so you can also keep them in the Dock or open
-them from Spotlight.
+The apps also work from the Dock and Spotlight.
 
 ![cdt list shows each account, whether it runs, and whether its clone is current](docs/screenshots/list.png)
 
 `cdt doctor` checks Claude.app, the helper, and each account's signature, version,
-notification permission and running state:
+update block, notification permission and running state:
 
 ![cdt doctor output for two accounts](docs/screenshots/doctor.png)
 
 ### After a Claude Desktop update
 
-Open the original Claude.app once so it installs the
-update. Then rebuild each account that `cdt list` marks as stale:
+Open the original Claude.app once so it installs the update. Then rebuild each account
+that `cdt list` marks as stale:
 
 ```bash
 cdt rebuild work@example.com
@@ -82,7 +90,7 @@ cdt rebuild work@example.com
 
 ### Move Claude Code sessions between accounts
 
-The target account must have opened its Code tab once.
+The target account must have opened its Code tab once. `default` is plain Claude.app.
 
 ```bash
 cdt sessions list work
@@ -90,11 +98,8 @@ cdt sessions copy --from default --to work@example.com --cwd /projects/api --dry
 cdt sessions copy --from default --to work@example.com --cwd /projects/api
 ```
 
-Commands that change or delete things (`rebuild`, `remove`, the `--to` of `sessions copy`)
-need the full account name; `open` and `sessions list` accept part of it.
-
-`default` is plain Claude.app. A copy backs up the target first, never overwrites a
-session that is already there, and keeps archived sessions archived.
+A copy backs up the target first, never overwrites a session that is already there,
+and keeps archived sessions archived.
 
 ![cdt sessions list, then a dry run and a real copy into work@example.com](docs/screenshots/sessions.png)
 
@@ -117,10 +122,15 @@ cdt uninstall --purge-data                  # also data folders and session back
 brew uninstall claude-desktop-twins
 ```
 
+Commands that change or delete things (`rebuild`, `remove`, the `--to` of
+`sessions copy`) need the full account name. `open` and `sessions list` accept part of
+it.
+
 ## How it works
 
-`cdt add` makes an APFS clone of `/Applications/Claude.app` (it shares disk blocks with
-the original, so it takes almost no extra space) and changes a few things in the copy:
+`cdt add` makes an APFS clone of `/Applications/Claude.app`. The clone shares disk
+blocks with the original, so it takes almost no extra space. Then it changes a few
+things in the copy:
 
 - a bundle id of its own, `local.claude-desktop-twins.<account>`, and a display name;
 - a small launcher that starts Claude with `--user-data-dir` pointing at the account's
@@ -136,8 +146,8 @@ the original, so it takes almost no extra space) and changes a few things in the
   needing Automation permission.
 
 The `claude://` link handler and Anthropic's provisioning profile are removed from the
-copy. No Anthropic file is shipped with this tool: every clone is made on your Mac
-from the Claude.app you installed.
+copy. No Anthropic file is shipped with this tool: every clone is made on your Mac from
+the Claude.app you installed.
 
 `cdt open` never starts a second instance on a data folder that is in use. It looks for
 a running Claude process on that folder and brings it forward instead.
@@ -148,8 +158,7 @@ a running Claude process on that folder and brings it forward instead.
   to Anthropic's signature, which the clone no longer has.
 - macOS asks for keychain access again after each rebuild, because the signature
   changes.
-- Clones do not update themselves: each one has Claude's "Block auto-updates" setting
-  turned on in its own configuration folder. Open the original Claude.app to update it, then run
+- Clones do not update themselves. Open the original Claude.app to update it, then run
   `cdt rebuild <account>` for each account `cdt list` marks as stale. A stale account
   keeps working on its older version until you rebuild it.
 - The Code tab in every account shares `~/.claude`, `~/.claude.json` and the Claude
@@ -171,7 +180,7 @@ and [claude-multiprofile](https://github.com/jmdarre-v/claude-multiprofile). The
 compares the two designs; the right-hand column comes from those projects' READMEs, not
 from testing them.
 
-| | This tool | Clones that keep Claude's identity |
+| | claude-desktop-twins | Clones that keep Claude's identity |
 |---|---|---|
 | Notification click opens the right account | Yes | Not by design: every copy is the same app to macOS |
 | Notification settings per account | Yes | Shared |
@@ -211,7 +220,7 @@ tool.
 
 Each account has its own data folder, so sign-ins, cookies and chats stay apart. The
 Code tab is the exception: all accounts share `~/.claude` (settings, skills and
-transcripts). See Limits.
+transcripts). See [Limits](#limits).
 
 ### What happens when Claude Desktop updates?
 
@@ -223,18 +232,12 @@ account keeps working on its older version.
 
 No. It relies on macOS app bundles, code signing and APFS clones.
 
-## Support
+## Contributing and support
 
-If this tool is useful to you, buy me a coffee on the
-[donate page](https://dakiquang.github.io/donate/) or through one of the links below. Bug
-reports and pull requests help too.
-
-- [PayPal](https://paypal.me/dakiquang)
-- [MoMo](https://me.momo.vn/dakiquang), or scan the VietQR code (Vietnam)
-
-Nếu thấy hữu ích, mời mình một ly cà phê qua MoMo hoặc quét mã VietQR bên dưới nhé.
-
-<img src="docs/support/momo-qr.png" width="220" alt="MoMo and VietQR code for donations">
+Bug reports and pull requests are welcome in
+[Issues](https://github.com/dakiquang/claude-desktop-twins/issues). Report security
+issues privately as described in [SECURITY.md](SECURITY.md). If the tool helps you, you
+can also [buy me a coffee](https://dakiquang.github.io/donate/).
 
 ## Disclaimer
 
@@ -245,4 +248,3 @@ employer, and comes with no promise of support. Use it at your own risk.
 ## License
 
 MIT. See [LICENSE](LICENSE). Made by [Quang Dang (@dakiquang)](https://github.com/dakiquang).
-Report security issues privately as described in [SECURITY.md](SECURITY.md).
