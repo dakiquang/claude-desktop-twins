@@ -11,6 +11,7 @@ to switch accounts.
 ![macOS 12+](https://img.shields.io/badge/macOS-12%2B-lightgrey)
 [![Homebrew](https://img.shields.io/badge/brew-dakiquang%2Ftap-orange)](https://github.com/dakiquang/homebrew-tap)
 
+[![Donate](https://img.shields.io/badge/%E2%98%95%20donate-dakiquang.github.io%2Fdonate-6f4e37)](https://dakiquang.github.io/donate/)
 [![Buy me a coffee with PayPal](https://img.shields.io/badge/PayPal-buy%20me%20a%20coffee-00457C?logo=paypal&logoColor=white)](https://paypal.me/dakiquang)
 [![Buy me a coffee with MoMo](https://img.shields.io/badge/MoMo-m%E1%BB%9Di%20c%C3%A0%20ph%C3%AA-A50064)](https://me.momo.vn/dakiquang)
 [![VietQR](https://img.shields.io/badge/VietQR-scan%20the%20code-A50064)](#support)
@@ -172,7 +173,8 @@ Both approaches are valid. This one picks correct notifications over automatic u
 
 ## Support
 
-If this tool is useful to you, buy me a coffee through one of the links below. Bug
+If this tool is useful to you, buy me a coffee on the
+[donate page](https://dakiquang.github.io/donate/) or through one of the links below. Bug
 reports and pull requests help too.
 
 - [PayPal](https://paypal.me/dakiquang)
