@@ -157,10 +157,13 @@ Both approaches are valid. This one picks correct notifications over automatic u
 
 ## Support
 
-If this tool saves you time, you can support it through
-[PayPal](https://paypal.me/dakiquang), or in Vietnam through
-[MoMo](https://me.momo.vn/dakiquang) or this VietQR code. Bug reports and pull requests
-help too.
+If this tool is useful to you, buy me a coffee through one of the links below. Bug
+reports and pull requests help too.
+
+- [PayPal](https://paypal.me/dakiquang)
+- [MoMo](https://me.momo.vn/dakiquang), or scan the VietQR code (Vietnam)
+
+Nếu thấy hữu ích, mời mình một ly cà phê qua MoMo hoặc quét mã VietQR bên dưới nhé.
 
 <img src="docs/support/momo-qr.png" width="220" alt="MoMo and VietQR code for donations">
 
