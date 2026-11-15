@@ -6,6 +6,8 @@ Run several Claude Desktop accounts side by side on one Mac. Each account become
 own app, with its own Dock icon, Cmd-Tab entry and notifications. Clicking a
 notification opens the account that sent it.
 
+![cdt add creates one app per account and asks macOS for notification permission](docs/screenshots/add.png)
+
 ## The problem
 
 Claude Desktop signs in to one account at a time. You can start a second copy on a
@@ -39,6 +41,13 @@ Sign in to the right account the first time each app opens. The apps live in
 `~/Applications/Claude Desktop Twins/`, so you can also keep them in the Dock or open
 them from Spotlight.
 
+![cdt list shows each account, whether it runs, and whether its clone is current](docs/screenshots/list.png)
+
+`cdt doctor` checks Claude.app, the helper, and each account's signature, version,
+notification permission and running state:
+
+![cdt doctor output for two accounts](docs/screenshots/doctor.png)
+
 After Claude Desktop updates, open the original Claude.app once so it installs the
 update, then rebuild each account that `cdt list` marks as stale:
 
@@ -60,6 +69,8 @@ need the full account name; `open` and `sessions list` accept part of it.
 
 `default` is plain Claude.app. A copy backs up the target first, never overwrites a
 session that is already there, and keeps archived sessions archived.
+
+![cdt sessions list, then a dry run and a real copy into work@example.com](docs/screenshots/sessions.png)
 
 Adopt a data folder made by another launcher or by hand:
 (the data folder of plain Claude.app cannot be imported; add an account and copy
@@ -122,15 +133,22 @@ you may not need this tool any more.
 
 ## Comparison
 
-| | This tool | Byte-identical clones (for example `claude-desktop-profiles`) |
-|---|---|---|
-| Notification click opens the right account | Yes | No: all copies share one app identity |
-| Own Dock icon, Cmd-Tab entry, notification settings | Yes | Shared |
-| Clones update themselves | No: `cdt rebuild` after each update | Yes |
-| Passkeys and device key | No | Yes |
+Other free tools clone Claude.app too, but keep Anthropic's bundle id and signature, for
+example [claude-desktop-profiles](https://github.com/odahcam/claude-desktop-profiles)
+and [claude-multiprofile](https://github.com/jmdarre-v/claude-multiprofile). The table
+compares the two designs; the right-hand column comes from those projects' READMEs, not
+from testing them.
 
-Both approaches are valid. This one picks correct notifications over self-updating
-clones.
+| | This tool | Clones that keep Claude's identity |
+|---|---|---|
+| Notification click opens the right account | Yes | Not by design: every copy is the same app to macOS |
+| Notification settings per account | Yes | Shared |
+| Own Dock icon and Cmd-Tab entry | Yes | Yes, as separate copies, often with tinted icons |
+| Picks up Claude updates | Run `cdt rebuild <account>` after each update | Automatically (self-update, or a rebuild at launch) |
+| Passkeys and device key | No | Yes |
+| Runtime | Bash, plus a small Swift helper built on your Mac | Swift app, or Node.js CLI |
+
+Both approaches are valid. This one picks correct notifications over automatic updates.
 
 ## Disclaimer
 

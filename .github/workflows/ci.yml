@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0  # gitleaks scans the whole history
       - run: brew install bats-core shellcheck gitleaks
-      - run: shellcheck -x bin/claude-desktop-twins lib/*.sh test/make-fake-app.sh
+      - run: shellcheck -x bin/claude-desktop-twins lib/*.sh test/make-fake-app.sh docs/screenshots/make-screenshots.sh
       - run: bats test
       - name: helper builds for both architectures
         run: |
