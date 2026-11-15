@@ -18,7 +18,7 @@ never paste real addresses into release notes).
 - [ ] Simulate a Claude update: `plutil -replace LocalSourceVersion -string 0.0.1 "<clone>/Contents/Info.plist"`
       then `codesign --force --sign - "<clone>"`. `cdt list` marks it stale with the
       rebuild command; `cdt rebuild <account>` makes it current.
-- [ ] `cdt sessions copy --from default --to work --dry-run`, then a real copy; restart
+- [ ] `cdt sessions copy --from default --to work@example.com --dry-run`, then a real copy; restart
       the account; copied sessions appear and archived ones stay archived.
 - [ ] `cdt uninstall`, then `brew uninstall claude-desktop-twins`;
       `mdfind "kMDItemCFBundleIdentifier == 'local.claude-desktop-twins.*'"` prints nothing
