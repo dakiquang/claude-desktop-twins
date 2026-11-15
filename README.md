@@ -10,6 +10,9 @@ right account opens.
 - Get notifications per account, and turn them on or off per account.
 - Move Claude Code sessions from one account to another.
 
+🇻🇳 **Tiếng Việt:** dùng nhiều tài khoản Claude Desktop cùng lúc trên một máy Mac, không
+cần đăng xuất. Xem [hướng dẫn tiếng Việt](#hướng-dẫn-tiếng-việt).
+
 [![Release](https://img.shields.io/github/v/release/dakiquang/claude-desktop-twins)](https://github.com/dakiquang/claude-desktop-twins/releases)
 [![CI](https://github.com/dakiquang/claude-desktop-twins/actions/workflows/ci.yml/badge.svg)](https://github.com/dakiquang/claude-desktop-twins/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -231,6 +234,55 @@ account keeps working on its older version.
 ### Does it work on Windows or Linux?
 
 No. It relies on macOS app bundles, code signing and APFS clones.
+
+## Hướng dẫn tiếng Việt
+
+**Chạy nhiều tài khoản Claude Desktop trên một máy Mac**, ví dụ tài khoản công ty và tài
+khoản cá nhân, mở cùng lúc mà không phải đăng xuất rồi đăng nhập lại. Mỗi tài khoản trở
+thành một app riêng, có icon riêng trên Dock, mục riêng trong Cmd-Tab và thông báo riêng.
+Bấm vào thông báo là mở đúng tài khoản đã gửi nó.
+
+### Cài đặt và dùng nhanh
+
+```bash
+brew install dakiquang/tap/claude-desktop-twins
+cdt add work@example.com
+cdt add personal@example.com
+cdt open work
+```
+
+Mỗi lệnh `cdt add` tạo một app trong `~/Applications/Claude Desktop Twins/` và xin quyền
+gửi thông báo (chọn Allow). Mở từng app một lần và đăng nhập đúng tài khoản. Cần macOS 12
+trở lên, Claude Desktop trong `/Applications` và Xcode Command Line Tools
+(`xcode-select --install`).
+
+### Câu hỏi thường gặp
+
+**Làm sao dùng 2 tài khoản Claude trên 1 máy Mac cùng lúc?**
+Chạy `cdt add` cho từng tài khoản. Mỗi tài khoản có app riêng; mở cả hai và đăng nhập một
+lần ở mỗi app.
+
+**Có đổi tài khoản Claude mà không cần đăng xuất không?**
+Có. Mỗi tài khoản luôn đăng nhập trong app của nó, bạn chuyển qua lại bằng Cmd-Tab,
+Dock, Spotlight hoặc `cdt open <tài khoản>`.
+
+**Có sửa Claude.app gốc không?**
+Không. Claude.app gốc giữ nguyên và vẫn tự cập nhật. Các app theo tài khoản là bản sao tạo
+ngay trên máy bạn.
+
+**Khi Claude Desktop cập nhật thì làm gì?**
+Mở Claude.app gốc một lần để nó cập nhật, rồi chạy `cdt rebuild <tài khoản>` cho từng tài
+khoản mà `cdt list` báo là cũ (stale).
+
+**Dữ liệu các tài khoản có tách riêng không?**
+Có: đăng nhập, cookie và lịch sử chat nằm ở thư mục riêng của từng tài khoản. Riêng tab
+Code dùng chung `~/.claude` (cài đặt, skill, transcript). Xem mục [Limits](#limits).
+
+**Có chạy trên Windows hay Linux không?**
+Không, chỉ macOS.
+
+Thấy hữu ích thì [mời mình một ly cà phê](#-found-it-useful-buy-me-a-coffee) qua MoMo,
+VietQR hoặc PayPal nhé.
 
 ## Contributing and support
 
