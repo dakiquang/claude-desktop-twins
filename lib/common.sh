@@ -3,7 +3,7 @@
 # Shared paths, logging and small helpers. Every path derives from HOME so tests and
 # `brew test` can run against a temporary home.
 
-CDT_VERSION="0.1.0"
+CDT_VERSION="0.2.0"
 CDT_NAME="claude-desktop-twins"
 CDT_BUNDLE_PREFIX="local.claude-desktop-twins"
 

@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-15
+
 ### Added
 
 - `list --json`, `doctor --json` and `sessions list <account> --json`: machine-readable output with a `schema` number; `doctor --json` gives each check a stable id, a level and the fix command.
@@ -25,5 +27,6 @@ All notable changes to this project are documented here. The format follows
 - Each clone blocks its own self-update with Claude's "Block auto-updates" setting in `<data dir>-3p/configLibrary/`, created only when that folder does not exist and removed by `remove` and `uninstall`; `doctor` reports it.
 - `cdt-helper`: requests notification permission, reads its status, and focuses a running account.
 
-[Unreleased]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/dakiquang/claude-desktop-twins/releases/tag/v0.1.0
