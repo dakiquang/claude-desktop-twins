@@ -1,10 +1,25 @@
-# claude-desktop-twins
+# claude-desktop-twins: multiple Claude Desktop accounts on one Mac
+
+**Run your work and personal Claude Desktop accounts side by side on macOS.** Each
+account becomes its own app, with its own Dock icon, Cmd-Tab entry and notifications,
+and clicking a notification opens the account that sent it. No more signing out and in
+to switch accounts.
+
+[![Release](https://img.shields.io/github/v/release/dakiquang/claude-desktop-twins)](https://github.com/dakiquang/claude-desktop-twins/releases)
+[![CI](https://github.com/dakiquang/claude-desktop-twins/actions/workflows/ci.yml/badge.svg)](https://github.com/dakiquang/claude-desktop-twins/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![macOS 12+](https://img.shields.io/badge/macOS-12%2B-lightgrey)
+[![Homebrew](https://img.shields.io/badge/brew-dakiquang%2Ftap-orange)](https://github.com/dakiquang/homebrew-tap)
+
+[![Buy me a coffee with PayPal](https://img.shields.io/badge/PayPal-buy%20me%20a%20coffee-00457C?logo=paypal&logoColor=white)](https://paypal.me/dakiquang)
+[![Buy me a coffee with MoMo](https://img.shields.io/badge/MoMo-m%E1%BB%9Di%20c%C3%A0%20ph%C3%AA-A50064)](https://me.momo.vn/dakiquang)
+[![VietQR](https://img.shields.io/badge/VietQR-scan%20the%20code-A50064)](#support)
+
+```bash
+brew install dakiquang/tap/claude-desktop-twins
+```
 
 Unofficial. Not affiliated with Anthropic.
-
-Run several Claude Desktop accounts side by side on one Mac. Each account becomes its
-own app, with its own Dock icon, Cmd-Tab entry and notifications. Clicking a
-notification opens the account that sent it.
 
 ![cdt add creates one app per account and asks macOS for notification permission](docs/screenshots/add.png)
 
