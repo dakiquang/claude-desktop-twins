@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-15
+
 ### Added
 
 - `add`, `rebuild` and `remove [--purge]`: build, refresh and delete a per-account clone of Claude.app with its own bundle id, launcher and notification permission. A failed rebuild leaves the previous clone in place.
@@ -17,3 +19,6 @@ All notable changes to this project are documented here. The format follows
 - `uninstall [--purge-data]`: remove every clone, the helper and the registry.
 - Each clone blocks its own self-update with Claude's "Block auto-updates" setting in `<data dir>-3p/configLibrary/`, created only when that folder does not exist and removed by `remove` and `uninstall`; `doctor` reports it.
 - `cdt-helper`: requests notification permission, reads its status, and focuses a running account.
+
+[Unreleased]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/dakiquang/claude-desktop-twins/releases/tag/v0.1.0
