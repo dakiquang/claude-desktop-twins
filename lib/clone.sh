@@ -154,6 +154,7 @@ clone_build() { # slug
   rm -rf "$old"
   "$CDT_LSREGISTER" -f "$dst" >/dev/null 2>&1 || warn "lsregister could not register $dst"
   account_set "$slug" SourceVersion "$version"
+  update_block_apply "$slug"
   info "built: $dst ($bid, Claude $version)"
 }
 
@@ -265,6 +266,7 @@ cmd_remove() {
       die "cancelled; nothing removed."
   fi
   clone_remove "$slug" || exit 1
+  update_block_remove "$data"
   account_delete "$slug"
   info "unregistered: $label"
   if [ "$purge" = 1 ] && [ -e "$data" ]; then

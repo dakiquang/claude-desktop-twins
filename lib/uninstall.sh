@@ -27,6 +27,7 @@ cmd_uninstall() {
     local data
     data="$(account_data_dir "$s")"
     clone_remove "$s" || exit 1
+    update_block_remove "$data"
     account_delete "$s"
     if [ -e "$data" ]; then
       case "$data" in

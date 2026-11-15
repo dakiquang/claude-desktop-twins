@@ -12,7 +12,7 @@ while [ -L "$self" ]; do
 done
 CDT_ROOT="$(cd "$(dirname "$self")/.." && pwd)"
 
-for f in common accounts clone launch doctor sessions import uninstall; do
+for f in common accounts clone updates launch doctor sessions import uninstall; do
   # shellcheck source=/dev/null
   . "$CDT_ROOT/lib/$f.sh"
 done

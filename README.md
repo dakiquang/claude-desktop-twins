@@ -100,6 +100,10 @@ the original, so it takes almost no extra space) and changes a few things in the
   folder under `~/Library/Application Support/claude-desktop-twins/profiles/`;
 - an ad-hoc signature whose signing identifier equals the new bundle id, which macOS
   requires before it lets an app post notifications;
+- Claude's own "Block auto-updates" setting, written to the account's
+  `<data folder>-3p/configLibrary/` and nowhere else, so the copy never replaces itself
+  while the original Claude.app keeps updating. If that folder already exists (it can
+  hold a third-party inference setup), it is left alone and `cdt doctor` says so;
 - a helper, `cdt-helper`, that asks macOS for notification permission on the app's
   behalf (Claude never asks by itself) and brings a running account forward without
   needing Automation permission.
@@ -117,7 +121,8 @@ a running Claude process on that folder and brings it forward instead.
   to Anthropic's signature, which the clone no longer has.
 - macOS asks for keychain access again after each rebuild, because the signature
   changes.
-- Clones do not update themselves. Open the original Claude.app to update it, then run
+- Clones do not update themselves: each one has Claude's "Block auto-updates" setting
+  turned on in its own configuration folder. Open the original Claude.app to update it, then run
   `cdt rebuild <account>` for each account `cdt list` marks as stale. A stale account
   keeps working on its older version until you rebuild it.
 - The Code tab in every account shares `~/.claude`, `~/.claude.json` and the Claude

@@ -63,6 +63,11 @@ cmd_doctor() {
     else
       _doc_ok "built from the installed Claude $(clone_version "$s")"
     fi
+    case "$(update_block_state "$(account_data_dir "$s")")" in
+      blocked) _doc_ok "self-update blocked (Claude's Block auto-updates setting)" ;;
+      foreign) _doc_warn "self-update not blocked: $(update_block_root "$(account_data_dir "$s")") holds a configuration that is not cdt's and is left alone" ;;
+      *) _doc_warn "self-update not blocked. Run: cdt rebuild $label" ;;
+    esac
     if [ -x "$app/Contents/MacOS/cdt-helper" ]; then
       status="$("$app/Contents/MacOS/cdt-helper" --status 2>/dev/null)"
       case "$status" in

@@ -15,4 +15,5 @@ All notable changes to this project are documented here. The format follows
 - `import <data dir> --as <account>`: adopt an existing data folder.
 - `rebuild`, `remove` and `sessions copy --to` need the full account name; `remove --purge` never trashes an imported data dir.
 - `uninstall [--purge-data]`: remove every clone, the helper and the registry.
+- Each clone blocks its own self-update with Claude's "Block auto-updates" setting in `<data dir>-3p/configLibrary/`, created only when that folder does not exist and removed by `remove` and `uninstall`; `doctor` reports it.
 - `cdt-helper`: requests notification permission, reads its status, and focuses a running account.
