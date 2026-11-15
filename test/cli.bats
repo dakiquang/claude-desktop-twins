@@ -15,7 +15,11 @@ teardown() { common_teardown; }
 @test "the long name and the alias are the same command" {
   run "$REPO_ROOT/bin/claude-desktop-twins" --version
   [ "$status" -eq 0 ]
-  [ "$output" = "claude-desktop-twins 0.1.0" ]
+  v="$(sed -n 's/^CDT_VERSION="\(.*\)"$/\1/p' "$REPO_ROOT/lib/common.sh")"
+  [ -n "$v" ]
+  [ "$output" = "claude-desktop-twins $v" ]
+  run "$CDT" --version
+  [ "$output" = "claude-desktop-twins $v" ]
 }
 
 @test "unknown command exits 64" {
