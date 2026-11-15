@@ -155,6 +155,11 @@ from testing them.
 
 Both approaches are valid. This one picks correct notifications over automatic updates.
 
+## Support
+
+If this tool saves you time, you can support it through
+[PayPal](https://paypal.me/dakiquang). Bug reports and pull requests help too.
+
 ## Disclaimer
 
 Unofficial personal project, not affiliated with or endorsed by Anthropic. "Claude" is
