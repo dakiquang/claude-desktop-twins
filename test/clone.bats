@@ -82,6 +82,27 @@ clone() { echo "$APPS/work@example.com.app"; }
   [ "$(plutil -extract LocalSourceVersion raw "$(clone)/Contents/Info.plist")" = "5.20000.1" ]
 }
 
+cdt_version() { sed -n 's/^CDT_VERSION="\(.*\)"$/\1/p' "$REPO_ROOT/lib/common.sh"; }
+
+@test "add records the cdt version that built the clone" {
+  v="$(cdt_version)"
+  [ -n "$v" ]
+  run "$CDT" add work@example.com
+  [ "$status" -eq 0 ]
+  [ "$(plutil -extract CDTBuilderVersion raw "$(clone)/Contents/Info.plist")" = "$v" ]
+}
+
+@test "rebuild records the cdt version on a clone built without it" {
+  "$CDT" add work@example.com
+  # A clone from cdt 0.2.0 or older has no such key.
+  plutil -remove CDTBuilderVersion "$(clone)/Contents/Info.plist" >/dev/null 2>&1 || true
+  run plutil -extract CDTBuilderVersion raw "$(clone)/Contents/Info.plist"
+  [ "$status" -ne 0 ]
+  run "$CDT" rebuild work@example.com
+  [ "$status" -eq 0 ]
+  [ "$(plutil -extract CDTBuilderVersion raw "$(clone)/Contents/Info.plist")" = "$(cdt_version)" ]
+}
+
 @test "rebuild and remove refuse while the account runs" {
   "$CDT" add work@example.com
   start_account work@example.com

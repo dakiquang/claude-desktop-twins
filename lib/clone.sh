@@ -167,6 +167,8 @@ _clone_customize() { # contents bundle_id label data_dir version helper entitlem
   plutil -remove CFBundleURLTypes "$c/Info.plist" >/dev/null 2>&1 || true
   rm -f "$c/embedded.provisionprofile"
   step plutil -replace LocalSourceVersion -string "$version" "$c/Info.plist" || return 1
+  # Which cdt built this clone, so another tool can tell a clone it can adopt.
+  step plutil -replace CDTBuilderVersion -string "$CDT_VERSION" "$c/Info.plist" || return 1
 
   # A custom icon replaces the one from Assets.car: macOS prefers CFBundleIconName, so
   # drop it and point CFBundleIconFile at our icns. Set before signing.
