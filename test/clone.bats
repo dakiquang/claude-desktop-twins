@@ -196,3 +196,14 @@ cdt_version() { sed -n 's/^CDT_VERSION="\(.*\)"$/\1/p' "$REPO_ROOT/lib/common.sh
   run "$CDT" add .work.old
   [ "$status" -eq 1 ]
 }
+
+@test "add rejects the name reserved for the Premium app, in any case or punctuation" {
+  for name in premium Premium PRE-MIUM; do
+    run "$CDT" add "$name"
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"'premium' is reserved"* ]] || false
+  done
+  [ ! -e "$DATA_ROOT/accounts/premium.plist" ]
+  [ ! -e "$DATA_ROOT/profiles/premium" ]
+  [ ! -e "$APPS/Premium.app" ]
+}

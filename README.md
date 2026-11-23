@@ -93,7 +93,8 @@ cdt rebuild work@example.com
 
 ### See Claude Code sessions per account
 
-`default` is plain Claude.app.
+`default` is plain Claude.app. `default` and `premium` are reserved and cannot be
+account names.
 
 ```bash
 cdt sessions list default
