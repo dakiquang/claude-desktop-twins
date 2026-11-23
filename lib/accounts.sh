@@ -52,13 +52,15 @@ account_for_data_dir() {
 account_is_empty() { dir_is_empty "$(account_data_dir "$1")"; }
 
 # Reject labels that cannot become an account: no letters or digits, a leading dot
-# (hidden app), or the reserved word "default" (plain Claude.app in `sessions`).
+# (hidden app), or the reserved words "default" (plain Claude.app in `sessions`) and
+# "premium" (its slug would give a clone the bundle id of the Premium menu bar app).
 label_check() { # label
   local slug
   slug="$(slugify "$1")"
   if [ -z "$slug" ]; then err "account name must contain letters or digits: '$1'"; return 1; fi
   case "$1" in .*) err "account name must not start with a dot: '$1'"; return 1 ;; esac
   if [ "$slug" = default ]; then err "'default' is reserved for plain Claude.app"; return 1; fi
+  if [ "$slug" = premium ]; then err "'premium' is reserved for Claude Desktop Twins Premium"; return 1; fi
 }
 
 # Resolve exactly (slug or label, ignoring case and punctuation). Commands that change

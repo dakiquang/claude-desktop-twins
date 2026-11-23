@@ -20,6 +20,18 @@ teardown() { common_teardown; }
   [[ "$output" == *"already registered"* ]] || false
 }
 
+@test "import refuses the names reserved for plain Claude.app and the Premium app" {
+  ext="$BATS_TEST_TMPDIR/OtherLauncher/work"
+  mkdir -p "$ext"
+  run "$CDT" import "$ext" --as Default
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"'default' is reserved"* ]] || false
+  run "$CDT" import "$ext" --as Premium
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"'premium' is reserved"* ]] || false
+  [ ! -e "$DATA_ROOT/accounts/premium.plist" ]
+}
+
 @test "import refuses a data dir in use" {
   ext="$BATS_TEST_TMPDIR/OtherLauncher/work"
   mkdir -p "$ext"
