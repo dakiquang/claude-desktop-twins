@@ -202,8 +202,8 @@ cdt_version() { sed -n 's/^CDT_VERSION="\(.*\)"$/\1/p' "$REPO_ROOT/lib/common.sh
     run "$CDT" add "$name"
     [ "$status" -eq 1 ]
     [[ "$output" == *"'premium' is reserved"* ]] || false
+    [ ! -e "$APPS/$name.app" ]
   done
   [ ! -e "$DATA_ROOT/accounts/premium.plist" ]
   [ ! -e "$DATA_ROOT/profiles/premium" ]
-  [ ! -e "$APPS/Premium.app" ]
 }
