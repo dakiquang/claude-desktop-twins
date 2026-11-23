@@ -149,10 +149,11 @@ the free CLI stays MIT and keeps everything above. Nothing in the CLI depends on
 - **Switch from the menu bar** in one click or with ⌥1…⌥9.
 - **One-click update** of every account after a Claude update, asking before it stops
   a running Claude Code session.
-- **Plan limits per account**: the 5-hour and weekly limits left, read from Claude Code on
-  your Mac (opt-in).
-- **Claude Code usage per account**: tokens and an estimated cost per day and per
-  5-hour block, counted on your Mac.
+- **Plan limits per account**: the 5-hour and weekly limits left, from Claude Code on your
+  Mac (opt-in; each refresh sends one tiny request through your own Claude Code, which uses
+  a little of the limit).
+- **Claude Code usage per account**: tokens and an estimated cost for today and the last
+  7 days, and the tokens of the current 5-hour block, counted on your Mac.
 - **Move Claude Code sessions** between accounts, with a backup first, nothing overwritten
   and archived sessions kept archived.
 - Dock icons, health checks with fixes and adding or removing accounts from a window.
