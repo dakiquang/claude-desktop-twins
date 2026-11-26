@@ -158,7 +158,7 @@ the free CLI stays MIT and keeps everything above. Nothing in the CLI depends on
   and archived sessions kept archived.
 - Dock icons, health checks with fixes and adding or removing accounts from a window.
 
-No telemetry; it reads no claude.ai tokens. [Get Premium]([[landing page URL]]).
+No telemetry; it reads no claude.ai tokens. [Get Premium](https://claudedesktoptwins.com/).
 Already using `cdt sessions copy` from v0.1.0? That version keeps working; it stays
 available under the MIT licence.
 
