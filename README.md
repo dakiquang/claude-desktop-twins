@@ -8,7 +8,7 @@ right account opens.
 - Keep work and personal accounts signed in side by side.
 - Switch accounts with Cmd-Tab, the Dock or Spotlight.
 - Get notifications per account, and turn them on or off per account.
-- Move Claude Code sessions between accounts with [Premium](#premium) (coming soon).
+- Move Claude Code sessions between accounts with [Premium](#premium).
 
 🇻🇳 **Tiếng Việt:** dùng nhiều tài khoản Claude Desktop cùng lúc trên một máy Mac, không
 cần đăng xuất. Xem [hướng dẫn tiếng Việt](#hướng-dẫn-tiếng-việt).
@@ -143,20 +143,23 @@ account name. `open` and `sessions list` accept part of it.
 
 ## Premium
 
-Claude Desktop Twins Premium is a menu bar app for the same accounts, sold once. It is
-in development; the free CLI stays MIT and keeps everything above.
+Claude Desktop Twins Premium is a menu bar app for the same accounts: $9.99 once, up to
+3 Macs, a 5-day free trial and a 14-day refund. It uses the accounts you made with `cdt`;
+the free CLI stays MIT and keeps everything above. Nothing in the CLI depends on it.
 
-- **Move Claude Code sessions** between accounts by drag and drop, with a preview, a
-  backup first, nothing overwritten and archived sessions kept archived.
+- **Switch from the menu bar** in one click or with ⌥1…⌥9.
 - **One-click update** of every account after a Claude update, asking before it stops
   a running Claude Code session.
-- **Claude Code usage per account**: tokens and an estimated cost per day and per
-  5-hour block, counted on your Mac.
-- **Separate Claude Code per account**, so work settings, memory and transcripts stay
-  out of the personal account.
-- Account icons, health checks with fixes and session backups from a window.
+- **Plan limits per account**: the 5-hour and weekly limits left, from Claude Code on your
+  Mac (opt-in; each refresh sends one tiny request through your own Claude Code, which uses
+  a little of the limit).
+- **Claude Code usage per account**: tokens and an estimated cost for today and the last
+  7 days, and the tokens of the current 5-hour block, counted on your Mac.
+- **Move Claude Code sessions** between accounts, with a backup first, nothing overwritten
+  and archived sessions kept archived.
+- Dock icons, health checks with fixes and adding or removing accounts from a window.
 
-To hear when it ships, [watch this repository's releases](https://github.com/dakiquang/claude-desktop-twins/releases).
+No telemetry; it reads no claude.ai tokens. [Get Premium](https://claudedesktoptwins.com/).
 Already using `cdt sessions copy` from v0.1.0? That version keeps working; it stays
 available under the MIT licence.
 
@@ -284,8 +287,7 @@ gửi thông báo (chọn Allow). Mở từng app một lần và đăng nhập 
 trở lên, Claude Desktop trong `/Applications` và Xcode Command Line Tools
 (`xcode-select --install`).
 
-Chuyển session Claude Code giữa các tài khoản có trong bản [Premium](#premium) (đang phát
-triển).
+Chuyển session Claude Code giữa các tài khoản có trong bản [Premium](#premium).
 
 ### Câu hỏi thường gặp
 
