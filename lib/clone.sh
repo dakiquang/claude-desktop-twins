@@ -243,6 +243,15 @@ cmd_add() {
   info "open it with: cdt open $label"
 }
 
+# macOS keeps each app's notification icon in usernoted and NotificationCenter and does
+# not notice a new icns, so banners keep showing the old icon after `cdt icon`. Both
+# services restart on their own within a second; restarting them picks up the new icon
+# (checked on macOS 26, 27/11/2026: a stale teal badge turned orange-red). Only the
+# current user's services are restarted, so a run under sudo leaves other users alone.
+_notification_icons_refresh() {
+  "$CDT_KILLALL" -u "$(id -un)" usernoted NotificationCenter >/dev/null 2>&1 || true
+}
+
 # `cdt icon set <account> <file.icns>` / `cdt icon reset <account>`: give an account's
 # app its own Dock and Cmd-Tab icon. The file is copied into the tool's data folder and
 # applied on every rebuild.
@@ -263,6 +272,7 @@ cmd_icon() {
       if ! { cp "$file" "$dest.tmp" && mv -f "$dest.tmp" "$dest"; }; then die "cannot copy $file"; fi
       account_set "$slug" IconFile "$dest" || exit 1
       clone_build "$slug" || exit 1
+      _notification_icons_refresh
       info "icon set for $(account_label "$slug"); the Dock may need a moment to refresh"
       ;;
     reset)
@@ -272,6 +282,7 @@ cmd_icon() {
       plutil -remove IconFile "$(account_file "$slug")" >/dev/null 2>&1 || true
       rm -f "$CDT_ICONS_DIR/$slug.icns"
       clone_build "$slug" || exit 1
+      _notification_icons_refresh
       info "icon reset for $(account_label "$slug")"
       ;;
     *) die "usage: cdt icon set <account> <file.icns> | cdt icon reset <account>" ;;

@@ -19,6 +19,7 @@ CDT_ICONS_DIR="$CDT_DATA_ROOT/icons"
 CDT_DEFAULT_DATA_DIR="$HOME/Library/Application Support/Claude"
 CDT_TRANSCRIPTS_DIR="${CDT_TRANSCRIPTS_DIR:-$HOME/.claude/projects}"
 CDT_LSREGISTER="${CDT_LSREGISTER:-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister}"
+CDT_KILLALL="${CDT_KILLALL:-/usr/bin/killall}"
 
 info() { printf '%s\n' "$*"; }
 warn() { printf 'warning: %s\n' "$*" >&2; }

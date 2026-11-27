@@ -121,7 +121,9 @@ cdt icon set work@example.com ~/Pictures/work.icns   # shown in the Dock and Cmd
 cdt icon reset work@example.com                      # back to Claude's icon
 ```
 
-The account must not be running. The icon is kept across rebuilds.
+The account must not be running. The icon is kept across rebuilds. Both commands also
+restart macOS's notification services for your user, so notification banners pick up the
+new icon; they start again on their own within a second.
 
 ### Use from scripts
 
