@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-27
+
 ### Fixed
 
 - `icon set` and `icon reset` restart macOS's notification services (`usernoted` and `NotificationCenter`, for the current user only) after the rebuild, so notification banners show the new icon instead of a cached old one.
@@ -47,7 +49,8 @@ All notable changes to this project are documented here. The format follows
 - Each clone blocks its own self-update with Claude's "Block auto-updates" setting in `<data dir>-3p/configLibrary/`, created only when that folder does not exist and removed by `remove` and `uninstall`; `doctor` reports it.
 - `cdt-helper`: requests notification permission, reads its status, and focuses a running account.
 
-[Unreleased]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/dakiquang/claude-desktop-twins/compare/v0.1.0...v0.2.0
