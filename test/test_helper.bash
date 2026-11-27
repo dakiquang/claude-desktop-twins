@@ -24,6 +24,11 @@ common_setup() {
   export FAKE_HELPER_LOG="$BATS_TEST_TMPDIR/helper.log"
   printf '#!/bin/bash\necho "$*" >> "%s"\n' "$OPEN_LOG" > "$CDT_OPEN"
   chmod +x "$CDT_OPEN"
+  # Never restart the real notification services from a test: record the call instead.
+  export CDT_KILLALL="$BATS_TEST_TMPDIR/killall-stub"
+  export KILLALL_LOG="$BATS_TEST_TMPDIR/killall.log"
+  printf '#!/bin/bash\necho "$*" >> "%s"\n' "$KILLALL_LOG" > "$CDT_KILLALL"
+  chmod +x "$CDT_KILLALL"
   DATA_ROOT="$HOME/Library/Application Support/claude-desktop-twins"
   APPS="$HOME/Applications/Claude Desktop Twins"
   mkdir -p "$DATA_ROOT/bin"

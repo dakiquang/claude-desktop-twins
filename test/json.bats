@@ -106,6 +106,19 @@ ICNS=/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/GenericApp
   [ ! -e "$DATA_ROOT/icons/workexamplecom.icns" ]
 }
 
+@test "icon set and reset restart the notification services so banners show the new icon" {
+  [ -f "$ICNS" ] || skip "no system icns to test with"
+  "$CDT" add work@example.com >/dev/null
+  "$CDT" rebuild work@example.com >/dev/null
+  [ ! -e "$KILLALL_LOG" ]
+  run "$CDT" icon set work@example.com "$ICNS"
+  [ "$status" -eq 0 ]
+  [ "$(cat "$KILLALL_LOG")" = "usernoted NotificationCenter" ]
+  run "$CDT" icon reset work@example.com
+  [ "$status" -eq 0 ]
+  [ "$(wc -l < "$KILLALL_LOG" | tr -d ' ')" = 2 ]
+}
+
 @test "icon set refuses a file that is not icns, and remove deletes the stored icon" {
   [ -f "$ICNS" ] || skip "no system icns to test with"
   "$CDT" add work@example.com >/dev/null
