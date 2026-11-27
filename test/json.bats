@@ -113,10 +113,11 @@ ICNS=/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/GenericApp
   [ ! -e "$KILLALL_LOG" ]
   run "$CDT" icon set work@example.com "$ICNS"
   [ "$status" -eq 0 ]
-  [ "$(cat "$KILLALL_LOG")" = "usernoted NotificationCenter" ]
+  [ "$(cat "$KILLALL_LOG")" = "-u $(id -un) usernoted NotificationCenter" ]
   run "$CDT" icon reset work@example.com
   [ "$status" -eq 0 ]
   [ "$(wc -l < "$KILLALL_LOG" | tr -d ' ')" = 2 ]
+  [ "$(sed -n 2p "$KILLALL_LOG")" = "-u $(id -un) usernoted NotificationCenter" ]
 }
 
 @test "icon set refuses a file that is not icns, and remove deletes the stored icon" {

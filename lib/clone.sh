@@ -246,9 +246,10 @@ cmd_add() {
 # macOS keeps each app's notification icon in usernoted and NotificationCenter and does
 # not notice a new icns, so banners keep showing the old icon after `cdt icon`. Both
 # services restart on their own within a second; restarting them picks up the new icon
-# (checked on macOS 26, 27/11/2026: a stale teal badge turned orange-red).
+# (checked on macOS 26, 27/11/2026: a stale teal badge turned orange-red). Only the
+# current user's services are restarted, so a run under sudo leaves other users alone.
 _notification_icons_refresh() {
-  "$CDT_KILLALL" usernoted NotificationCenter >/dev/null 2>&1 || true
+  "$CDT_KILLALL" -u "$(id -un)" usernoted NotificationCenter >/dev/null 2>&1 || true
 }
 
 # `cdt icon set <account> <file.icns>` / `cdt icon reset <account>`: give an account's

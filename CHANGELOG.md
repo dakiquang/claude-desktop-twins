@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- `icon set` and `icon reset` restart macOS's notification services (`usernoted` and `NotificationCenter`, for the current user only) after the rebuild, so notification banners show the new icon instead of a cached old one.
+
 ## [0.3.1] - 2026-11-23
 
 ### Changed
